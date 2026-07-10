@@ -1,8 +1,9 @@
 import { FilmDto, ScheduleDto } from '../films/dto/films.dto';
 import { TicketDto } from '../order/dto/order.dto';
-import { Film, FilmSchedule } from './entities/film.schema';
+import { FilmEntity } from './entities/film.entity';
+import { ScheduleEntity } from './entities/schedule.entity';
 
-export const toFilmDto = (film: Film): FilmDto => ({
+export const toFilmDto = (film: FilmEntity): FilmDto => ({
   id: film.id,
   rating: film.rating,
   director: film.director,
@@ -14,9 +15,9 @@ export const toFilmDto = (film: Film): FilmDto => ({
   cover: film.cover,
 });
 
-export const toScheduleDto = (schedule: FilmSchedule): ScheduleDto => ({
+export const toScheduleDto = (schedule: ScheduleEntity): ScheduleDto => ({
   id: schedule.id,
-  daytime: schedule.daytime,
+  daytime: schedule.daytime.toISOString(),
   hall: String(schedule.hall),
   rows: schedule.rows,
   seats: schedule.seats,
@@ -26,13 +27,13 @@ export const toScheduleDto = (schedule: FilmSchedule): ScheduleDto => ({
 
 export const toTicketDto = (
   filmId: string,
-  schedule: FilmSchedule,
+  schedule: ScheduleEntity,
   row: number,
   seat: number,
 ): TicketDto => ({
   film: filmId,
   session: schedule.id,
-  daytime: schedule.daytime,
+  daytime: schedule.daytime.toISOString(),
   row,
   seat,
   price: schedule.price,
