@@ -20,6 +20,16 @@ const toStringArray = (
     .filter(Boolean);
 };
 
+export const toScheduleDto = (schedule: ScheduleEntity): ScheduleDto => ({
+  id: schedule.id,
+  daytime: schedule.daytime,
+  hall: Number(schedule.hall),
+  rows: schedule.rows,
+  seats: schedule.seats,
+  price: schedule.price,
+  taken: toStringArray(schedule.taken),
+});
+
 export const toFilmDto = (film: FilmEntity): FilmDto => ({
   id: film.id,
   rating: film.rating,
@@ -30,16 +40,7 @@ export const toFilmDto = (film: FilmEntity): FilmDto => ({
   description: film.description,
   image: film.image,
   cover: film.cover,
-});
-
-export const toScheduleDto = (schedule: ScheduleEntity): ScheduleDto => ({
-  id: schedule.id,
-  daytime: schedule.daytime,
-  hall: String(schedule.hall),
-  rows: schedule.rows,
-  seats: schedule.seats,
-  price: schedule.price,
-  taken: toStringArray(schedule.taken),
+  schedule: (film.schedule ?? []).map(toScheduleDto),
 });
 
 export const toTicketDto = (

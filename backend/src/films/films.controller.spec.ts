@@ -41,6 +41,17 @@ describe('FilmsController', () => {
           description: 'Description',
           image: '/bg1s.jpg',
           cover: '/bg1c.jpg',
+          schedule: [
+            {
+              id: 'session-1',
+              daytime: '2024-06-28T10:00:53.000Z',
+              hall: 0,
+              rows: 5,
+              seats: 10,
+              price: 350,
+              taken: [],
+            },
+          ],
         },
       ],
     };
@@ -57,7 +68,7 @@ describe('FilmsController', () => {
         {
           id: 'session-1',
           daytime: '2024-06-28T10:00:53.000Z',
-          hall: '0',
+          hall: 0,
           rows: 5,
           seats: 10,
           price: 350,

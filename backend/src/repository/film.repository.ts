@@ -35,7 +35,14 @@ export class FilmRepository implements FilmsRepository {
   ) {}
 
   async findAllFilms(): Promise<FilmDto[]> {
-    const films = await this.films.find();
+    const films = await this.films.find({
+      relations: { schedule: true },
+      order: {
+        schedule: {
+          daytime: 'ASC',
+        },
+      },
+    });
     return films.map((film) => toFilmDto(film));
   }
 
