@@ -22,7 +22,7 @@ export class SeedTestData1720500001000 implements MigrationInterface {
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `DELETE FROM "schedule" WHERE "id" IN (
+      `DELETE FROM "schedules" WHERE "id" IN (
         'f2e429b0-685d-41f8-a8cd-1d8cb63b99ce',
         '5beec101-acbb-4158-adc6-d855716b44a8',
         '89ee32f3-8164-40a6-b237-f4d492450250',
@@ -32,7 +32,7 @@ export class SeedTestData1720500001000 implements MigrationInterface {
       );`,
     );
     await queryRunner.query(
-      `DELETE FROM "film" WHERE "id" IN (
+      `DELETE FROM "films" WHERE "id" IN (
         '0e33c7f6-27a7-4aa0-8e61-65d7e5effecf',
         '51b4bc85-646d-47fc-b988-3e7051a9fe9e'
       );`,

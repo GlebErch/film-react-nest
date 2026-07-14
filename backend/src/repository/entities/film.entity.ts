@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 import { ScheduleEntity } from './schedule.entity';
 
-@Entity({ name: 'film' })
+@Entity({ name: 'films' })
 export class FilmEntity {
   @PrimaryColumn({ type: 'uuid' })
   id: string;
@@ -9,25 +9,25 @@ export class FilmEntity {
   @Column({ type: 'float' })
   rating: number;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'varchar' })
   director: string;
 
-  @Column({ type: 'text', array: true, default: '{}' })
-  tags: string[];
-
   @Column({ type: 'text' })
+  tags: string;
+
+  @Column({ type: 'varchar' })
   image: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'varchar' })
   cover: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'varchar' })
   title: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'varchar' })
   about: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'varchar' })
   description: string;
 
   @OneToMany(() => ScheduleEntity, (schedule) => schedule.film)

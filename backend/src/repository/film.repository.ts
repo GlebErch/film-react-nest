@@ -12,6 +12,19 @@ import { ScheduleEntity } from './entities/schedule.entity';
 import { FilmsRepository } from './interfaces/films.repository';
 import { toFilmDto, toScheduleDto, toTicketDto } from './mapper';
 
+const parseTaken = (taken: string | null | undefined): string[] => {
+  if (!taken) {
+    return [];
+  }
+
+  return taken
+    .split(',')
+    .map((item) => item.trim())
+    .filter(Boolean);
+};
+
+const serializeTaken = (taken: string[]): string => taken.join(',');
+
 @Injectable()
 export class FilmRepository implements FilmsRepository {
   constructor(
@@ -59,12 +72,13 @@ export class FilmRepository implements FilmsRepository {
 
       const seatKey = `${ticket.row}:${ticket.seat}`;
       const uniqueKey = `${ticket.film}:${ticket.session}:${seatKey}`;
+      const takenSeats = parseTaken(schedule.taken);
 
       if (seatsInRequest.has(uniqueKey)) {
         throw new BadRequestException({ error: 'Seat already taken' });
       }
 
-      if (schedule.taken.includes(seatKey)) {
+      if (takenSeats.includes(seatKey)) {
         throw new BadRequestException({ error: 'Seat already taken' });
       }
 
@@ -89,11 +103,12 @@ export class FilmRepository implements FilmsRepository {
           throw new NotFoundException({ error: 'Session not found' });
         }
 
-        if (session.taken.includes(seatKey)) {
+        const takenSeats = parseTaken(session.taken);
+        if (takenSeats.includes(seatKey)) {
           throw new BadRequestException({ error: 'Seat already taken' });
         }
 
-        session.taken = [...session.taken, seatKey];
+        session.taken = serializeTaken([...takenSeats, seatKey]);
         const updatedSession = await scheduleRepo.save(session);
         confirmedTickets.push(
           toTicketDto(ticket.film, updatedSession, ticket.row, ticket.seat),

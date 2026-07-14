@@ -31,13 +31,15 @@ import { OrderModule } from './order/order.module';
           type: 'postgres' as const,
           url:
             configService.get<string>('DATABASE_URL') ??
-            'postgres://localhost:5432/afisha',
+            'postgres://localhost:5432/films',
           username:
             configService.get<string>('DATABASE_USERNAME') ?? 'postgres',
           password:
             configService.get<string>('DATABASE_PASSWORD') ?? 'postgres',
           autoLoadEntities: true,
           synchronize: false,
+          retryAttempts: 20,
+          retryDelay: 3000,
         };
       },
     }),

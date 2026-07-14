@@ -1,24 +1,32 @@
-CREATE TABLE IF NOT EXISTS film (
-  id uuid PRIMARY KEY,
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+CREATE TABLE IF NOT EXISTS public.films
+(
+  id uuid DEFAULT uuid_generate_v4() NOT NULL
+    CONSTRAINT "PK_films" PRIMARY KEY,
   rating double precision NOT NULL,
-  director text NOT NULL,
-  tags text[] NOT NULL DEFAULT '{}',
-  image text NOT NULL,
-  cover text NOT NULL,
-  title text NOT NULL,
-  about text NOT NULL,
-  description text NOT NULL
+  director varchar NOT NULL,
+  tags text NOT NULL,
+  image varchar NOT NULL,
+  cover varchar NOT NULL,
+  title varchar NOT NULL,
+  about varchar NOT NULL,
+  description varchar NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS schedule (
-  id uuid PRIMARY KEY,
-  film_id uuid NOT NULL REFERENCES film(id) ON DELETE CASCADE,
-  daytime timestamptz NOT NULL,
-  hall text NOT NULL,
+CREATE TABLE IF NOT EXISTS public.schedules
+(
+  id uuid DEFAULT uuid_generate_v4() NOT NULL
+    CONSTRAINT "PK_schedules" PRIMARY KEY,
+  daytime varchar NOT NULL,
+  hall integer NOT NULL,
   rows integer NOT NULL,
   seats integer NOT NULL,
-  price integer NOT NULL,
-  taken text[] NOT NULL DEFAULT '{}'
+  price double precision NOT NULL,
+  taken text NOT NULL DEFAULT '',
+  "filmId" uuid
+    CONSTRAINT "FK_schedules_films"
+    REFERENCES public.films
 );
 
-CREATE INDEX IF NOT EXISTS idx_schedule_film_id ON schedule(film_id);
+CREATE INDEX IF NOT EXISTS idx_schedules_film_id ON public.schedules ("filmId");

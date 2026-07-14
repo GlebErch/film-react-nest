@@ -1,10 +1,10 @@
-INSERT INTO film (id, rating, director, tags, image, cover, title, about, description)
+INSERT INTO films (id, rating, director, tags, image, cover, title, about, description)
 VALUES
   (
     '0e33c7f6-27a7-4aa0-8e61-65d7e5effecf',
     2.9,
     'Итан Райт',
-    ARRAY['Документальный'],
+    'Документальный',
     '/bg1s.jpg',
     '/bg1c.jpg',
     'Архитекторы общества',
@@ -15,7 +15,7 @@ VALUES
     '51b4bc85-646d-47fc-b988-3e7051a9fe9e',
     9.0,
     'Харрисон Рид',
-    ARRAY['Рекомендуемые'],
+    'Рекомендуемые',
     '/bg3s.jpg',
     '/bg3c.jpg',
     'Недостижимая утопия',

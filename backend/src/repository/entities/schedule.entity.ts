@@ -1,23 +1,26 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 import { FilmEntity } from './film.entity';
 
-@Entity({ name: 'schedule' })
+@Entity({ name: 'schedules' })
 export class ScheduleEntity {
   @PrimaryColumn({ type: 'uuid' })
   id: string;
 
-  @Column({ name: 'film_id', type: 'uuid' })
+  @Column({ name: 'filmId', type: 'uuid', nullable: true })
   filmId: string;
 
-  @ManyToOne(() => FilmEntity, (film) => film.schedule, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'film_id' })
+  @ManyToOne(() => FilmEntity, (film) => film.schedule, {
+    onDelete: 'CASCADE',
+    nullable: true,
+  })
+  @JoinColumn({ name: 'filmId' })
   film: FilmEntity;
 
-  @Column({ type: 'timestamptz' })
-  daytime: Date;
+  @Column({ type: 'varchar' })
+  daytime: string;
 
-  @Column({ type: 'text' })
-  hall: string;
+  @Column({ type: 'integer' })
+  hall: number;
 
   @Column({ type: 'integer' })
   rows: number;
@@ -25,9 +28,9 @@ export class ScheduleEntity {
   @Column({ type: 'integer' })
   seats: number;
 
-  @Column({ type: 'integer' })
+  @Column({ type: 'float' })
   price: number;
 
-  @Column({ type: 'text', array: true, default: '{}' })
-  taken: string[];
+  @Column({ type: 'text', default: '' })
+  taken: string;
 }
