@@ -1,15 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { randomUUID } from 'crypto';
-import { FilmRepository } from '../repository/film.repository';
 import {
   CreateOrderDto,
   OrderResponseDto,
   OrderTicketDto,
 } from './dto/order.dto';
+import { APP_REPOSITORY } from '../repository/app-repository.token';
+import { FilmsRepository } from '../repository/interfaces/films.repository';
 
 @Injectable()
 export class OrderService {
-  constructor(private readonly filmRepository: FilmRepository) {}
+  constructor(
+    @Inject(APP_REPOSITORY) private readonly filmRepository: FilmsRepository,
+  ) {}
 
   async createOrder(payload: CreateOrderDto): Promise<OrderResponseDto> {
     const reserved = await this.filmRepository.reserveTickets(payload.tickets);
