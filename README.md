@@ -1,5 +1,9 @@
 # FILM!
 
+## Ссылки
+
+- Приложение: https://glebfrontend.students.nomorepartiessite.ru
+
 ## Установка
 
 ### MongoDB
@@ -30,7 +34,3 @@ MongoDB должна быть установлена и запущена.
 `npm start:debug`
 
 Для проверки отправьте тестовый запрос с помощью Postman или `curl`.
-
-
-
-
