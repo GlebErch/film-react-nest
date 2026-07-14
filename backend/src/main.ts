@@ -10,6 +10,6 @@ async function bootstrap() {
   app.setGlobalPrefix('api/afisha');
   app.enableCors();
   app.useLogger(createAppLogger(process.env.LOGGER_TYPE));
-  await app.listen(3000);
+  await app.listen(3000, '0.0.0.0');
 }
 bootstrap();

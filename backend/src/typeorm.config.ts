@@ -14,7 +14,7 @@ if (normalizedDriver !== 'postgres') {
 
 export default new DataSource({
   type: 'postgres',
-  url: process.env.DATABASE_URL ?? 'postgres://localhost:5432/afisha',
+  url: process.env.DATABASE_URL ?? 'postgres://localhost:5432/films',
   username: process.env.DATABASE_USERNAME ?? 'postgres',
   password: process.env.DATABASE_PASSWORD ?? 'postgres',
   entities: [FilmEntity, ScheduleEntity],

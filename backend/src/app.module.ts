@@ -16,30 +16,43 @@ import { OrderModule } from './order/order.module';
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
+        const strip = (value?: string) =>
+          value?.replace(/^["']|["']$/g, '').trim();
+
         const normalizedDriver = (
-          configService.get<string>('DATABASE_DRIVER') ?? 'postgres'
-        )
-          .replace(/"/g, '')
-          .trim()
-          .toLowerCase();
+          strip(configService.get<string>('DATABASE_DRIVER')) ?? 'postgres'
+        ).toLowerCase();
 
         if (normalizedDriver !== 'postgres') {
           throw new Error('Only postgres DATABASE_DRIVER is supported');
         }
 
+        const rawUrl =
+          strip(configService.get<string>('DATABASE_URL')) ??
+          'postgres://localhost:5432/films';
+        const username =
+          strip(configService.get<string>('DATABASE_USERNAME')) ?? 'postgres';
+        const password =
+          strip(configService.get<string>('DATABASE_PASSWORD')) ?? 'postgres';
+
+        const normalizedUrl = rawUrl.replace(/^postgresql:/i, 'postgres:');
+        const parsed = new URL(normalizedUrl.replace(/^postgres:/i, 'http:'));
+
         return {
           type: 'postgres' as const,
-          url:
-            configService.get<string>('DATABASE_URL') ??
-            'postgres://localhost:5432/films',
-          username:
-            configService.get<string>('DATABASE_USERNAME') ?? 'postgres',
-          password:
-            configService.get<string>('DATABASE_PASSWORD') ?? 'postgres',
+          host: parsed.hostname || 'localhost',
+          port: Number(parsed.port || 5432),
+          database: parsed.pathname.replace(/^\//, '') || 'films',
+          username: parsed.username
+            ? decodeURIComponent(parsed.username)
+            : username,
+          password: parsed.password
+            ? decodeURIComponent(parsed.password)
+            : password,
           autoLoadEntities: true,
           synchronize: false,
-          retryAttempts: 20,
-          retryDelay: 3000,
+          retryAttempts: 30,
+          retryDelay: 2000,
         };
       },
     }),
